@@ -1,2 +1,1 @@
-
-web: gunicorn apjot.wsgi --log-file -
+web: gunicorn solarflash.wsgi --log-file -
