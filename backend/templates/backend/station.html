@@ -1,0 +1,143 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+            <div> 
+                <h3 style="padding-block: 1rem;">Today Overview</h3>
+            <div class="flex">
+                <div class="box flex"> 
+                    <div style="width: 100px;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                  
+                    <div>
+                        <ul> 
+                            <li > Total Stations : {{station_count}}</li>
+                            <li data-color="green"> Functional ({{functional}})</li>
+                            <li data-color="red"> Faultly Stations ({{out_of_order}})</li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="box flex_column">
+               
+                        <p>  Energy Used </p>
+                        <h4>{{total_energy_consumed}}</h4>
+                    </div>
+                    <div class="box flex_column" >
+               
+                        <p>  Number of Sessions</p>
+                        <h4>{{session_count}}</h4>
+                    </div>
+                    <div class="box flex_column">
+               
+                        <p>  Average Charge Time </p>
+                        <h4>{{average_duration}}</h4>
+                    </div>
+           
+                <div class="box">
+                    <p> Insight</p>
+                    <ul>
+                        {% for item in messages%}
+                        <li>{{item}}</li>
+                       {%endfor%}
+                    </ul>
+                </div>
+            </div>
+        </div> 
+
+            <div class="box box_chart">
+                <div style="padding-bottom: 1rem;">
+                    <button onclick="createChart({{ hour_labels|safe }}, {{ count_values|safe }},title='Number of Charging Sessions per Hour')"> Sessions</button>
+                    <button onclick="createChart({{ hour_labels_energy|safe }}, {{ energy_values|safe }},title='Energy Consumption per Hour')"> Energy Used</button>
+                </div>
+                <div>
+                    <h2 id="title_barchart">Number of Charging Sessions per Hour</h2>
+                    <canvas id="chart" height="70px"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        // Get the canvas element
+        var canvas = document.getElementById('myChart');
+      
+        // Create the chart instance
+        var myChart = new Chart(canvas, {
+          type: 'doughnut', // Specify the chart type as doughnut
+          data: {
+            labels: ['Functional stations', 'Defekt stations'], // Specify the labels for the chart
+            datasets: [{
+              label: 'Data', // Specify the label for the dataset
+              data: [`{{functional}}`,`{{out_of_order}}`], // Specify the data values
+        backgroundColor: [
+                '#229ECE',
+                '#CE5222'
+              ],
+              borderWidth: 0 // Specify the border width
+            }]
+          },
+          options: {
+            responsive: true, // Make the chart responsive
+            cutout: '70%', // Specify the size of the central cutout (e.g., 60% of the radius)
+            plugins: {
+              legend: {
+                display: false // Position the legend at the bottom
+              }
+            },
+
+          }
+        });
+
+      </script>
+    <script>
+function createChart( labels, data,title) {
+    var chartId = 'chart'
+    var ctx = document.getElementById(chartId).getContext('2d');
+    var existingChart = Chart.getChart(ctx); // Get the existing chart instance
+    var title_heading = document.querySelector('#title_barchart')
+    
+    if (existingChart) {
+        existingChart.destroy(); // Destroy the existing chart if it exists
+    }
+    title_heading.innerText =title
+    var newChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '',
+                data: data,
+                backgroundColor: [
+                    'rgb(34,158,206)',
+                
+                ],
+                borderColor: [
+                'rgb(34,158,206)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function(value, index, values) {
+                            return value;
+                        }
+                    },
+                }],
+            }
+        }
+    });
+
+    return newChart; // Return the new chart instance
+}
+createChart({{ hour_labels_energy|safe }}, {{ energy_values|safe }},'Number of Charging Sessions per Hour')
+</script>
+
+
+{% endblock %}

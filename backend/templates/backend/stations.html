@@ -1,0 +1,74 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+
+<style>
+    table {
+        
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr{
+        cursor: pointer;
+    }
+    tr:hover {
+        background-color: #9BD7EE;
+    }
+    .dot {
+    height: 15px;
+    width: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    }
+</style>
+    <div> 
+        <table>
+            <thead>
+                <tr>
+                    <th>Station ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Is Functional</th>
+
+                    <th>Battery Capacity</th>
+                    <th>Charging Speed</th>
+                    <th>Solar Panel Capacity</th>
+                    <th>Solar Irradiance</th>
+                    <th>Solar Panel Efficiency</th>
+                    <th>Usage Cost</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for charging_station in stations %}
+    
+                    <tr onclick="window.location.href='{% url 'station_overview' charging_station.stationid %}'">
+
+                      
+                        <td>{{ charging_station.stationid }}</td>
+                        <td>{{ charging_station.name }}</td>
+                        <td>{{ charging_station.location }}</td>
+                        <td> <span class="dot" style="{% if charging_station.is_functional %} background-color:green; {%endif%}"></span> </td>
+                      
+                        <td>{{ charging_station.battery_capacity }}%</td>
+                        <td>{{ charging_station.get_charging_speed_display }}</td>
+                        <td>{{ charging_station.solar_panel_capacity }}KW</td>
+                        <td>{{ charging_station.solar_irradiance }}</td>
+                        <td>{{ charging_station.solar_panel_efficiency }}</td>
+                        <td>{{ charging_station.usage_cost }}</td>
+                 
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+{% endblock %}

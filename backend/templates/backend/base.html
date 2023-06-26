@@ -1,0 +1,145 @@
+{%load static%}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Solar Flash - Monitoring </title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        :root{
+            --primary-color: rgba(34,158,206,80%)
+
+        }
+        body{
+            background-color: #f5f6fa;
+        }
+        nav{
+            width: 100%;
+            background-color: var(--primary-color);
+            padding: 1rem;
+            color: white;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        .grid_container{
+            display: grid;
+            width: 100%;
+            height: 100vh;
+            grid-template-columns: 200px 1fr; 
+            gap: 0.5rem;
+        }
+        .grid_container > div{
+            height:100%;
+        }
+        .sidenav{
+            background-color: white;
+        }
+        .sidenav div{
+            margin-bottom: 1rem;
+        }
+        .sidenav li{
+            padding:1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .logo {
+            padding: 0.5rem 0.5rem;
+
+        }
+        .main{
+            background-color: #f5f6fa;
+        }
+        .flex{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding-block: 1rem;
+        }
+        .box{
+            background-color: white;
+            height: 200px;
+            padding: 1rem;
+            min-height: 120px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+        }
+        .box_chart{
+            width: 100%;
+            height: initial;
+        }
+        .flex_column{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        ul{
+            list-style-type: none;
+        }
+        .main li::before{
+            content: "\25A0"; 
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+            color: attr(data-color);
+        }
+        li{
+            padding-block:7px ;
+        }
+        ul li[data-color="green"]::before {
+        color:#229ECE
+
+        }
+
+
+        ul li[data-color="red"]::before {
+        color:#CE5222
+        }
+        button{
+            padding: 0.2rem 0.6rem;
+            background-color: lightblue;
+            border: none;
+
+        }
+    
+    </style>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+    <body>
+        <div class="grid_container">
+            <div class="sidenav">
+                <div class="logo"> 
+                    <img src="https://i.ibb.co/L8D9zYg/Orange-Blue-Minimalist-Lightning-Fast-Logo.png" alt="logo_solar flash"  width="60px"> 
+                </div>
+
+                <div>
+                    <ul >
+                        <li><a href="{% url 'home' %}"> Home</a></li>
+                        <li><a href="{% url 'stations' %}">Stations</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main">
+                <nav>
+                    this is nav
+                </nav>
+                <div>
+                    {% block content %}
+               
+                    {%endblock%}
+                </div>
+
+            </div>
+    </body>
+</html>
